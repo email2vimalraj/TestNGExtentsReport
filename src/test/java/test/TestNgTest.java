@@ -1,9 +1,6 @@
 package test;
 
-import com.relevantcodes.extentreports.ExtentTest;
-import com.relevantcodes.extentreports.LogStatus;
 import com.vimalselvam.testng.listener.ExtentTestNgFormatter;
-import org.testng.ISuite;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.annotations.AfterMethod;
@@ -29,7 +26,8 @@ public class TestNgTest {
 
     @AfterMethod
     public void afterMethod(ITestResult iTestResult) {
-        ExtentTestNgFormatter.attachScreenshot(iTestResult, "/Users/vimalrajselvam/development/extentreports/target/test-classes/1.png");
+        ExtentTestNgFormatter.attachScreenshot(iTestResult,
+                "/Users/vimalrajselvam/development/extentreports/target/test-classes/1.png");
         Reporter.log("After Method: " + iTestResult.getMethod().getMethodName());
 //        ExtentTest test = (ExtentTest) iTestResult.getAttribute("test");
 //

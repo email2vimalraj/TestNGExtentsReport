@@ -3,7 +3,6 @@
     <listeners>
         <listener class-name="com.vimalselvam.testng.listener.ExtentTestNgFormatter" />
     </listeners>
-    <parameter name="report_path" value="/Users/vimalrajselvam/development/TestNgExtentReporter/output/report.html" />
     <test name="Test">
         <classes>
             <class name="test.TestNgTest" />

@@ -4,7 +4,10 @@ import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
 import org.testng.*;
+import org.testng.xml.XmlSuite;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,30 +15,34 @@ import java.util.Map;
 /**
  * This class houses the listener for the TestNG which generates the html report by using Extent Report.
  */
-public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IInvokedMethodListener {
-//    private ExtentReports reporter;
-//    private ExtentTest test;
+public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IInvokedMethodListener, IReporter {
+    private ExtentReports reporter;
     private static Map<String, String> systemInfo;
 
-    public ExtentTestNgFormatter() {
+    public ExtentTestNgFormatter() throws IOException {
         systemInfo = new HashMap<String, String>();
+        String reportPath = System.getProperty("reportPath");
+        if (reportPath == null) {
+            File file = new File("output" + File.separator + "Run_" + System.currentTimeMillis());
+            if (!file.exists()) {
+                if (!file.mkdirs()) {
+                    throw new IOException("Failed to create output run directory");
+                }
+            }
+            reportPath = file.getAbsolutePath() + File.separator + "report.html";
+        }
+        reporter = new ExtentReports(reportPath);
     }
 
     public void onStart(ISuite iSuite) {
-        ExtentReports reporter = new ExtentReports(iSuite.getParameter("report_path"));
         ExtentTest suite = reporter.startTest(iSuite.getName());
         iSuite.setAttribute("reporter", reporter);
         iSuite.setAttribute("suite", suite);
     }
 
     public void onFinish(ISuite iSuite) {
-//        System.err.println("Suite Status: ");
-        ExtentReports reporter = (ExtentReports) iSuite.getAttribute("reporter");
         ExtentTest suite = (ExtentTest) iSuite.getAttribute("suite");
         reporter.endTest(suite);
-        reporter.addSystemInfo(systemInfo);
-        reporter.flush();
-        reporter.close();
     }
 
 
@@ -60,9 +67,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     }
 
     public void onStart(ITestContext iTestContext) {
-//        System.err.println("Test Context Name: " + iTestContext.getName());
         ISuite iSuite = iTestContext.getSuite();
-        ExtentReports reporter = (ExtentReports) iSuite.getAttribute("reporter");
         ExtentTest suite = (ExtentTest) iSuite.getAttribute("suite");
         ExtentTest testContext = reporter.startTest(iTestContext.getName());
         suite.appendChild(testContext);
@@ -70,8 +75,6 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     }
 
     public void onFinish(ITestContext iTestContext) {
-        ISuite iSuite = iTestContext.getSuite();
-        ExtentReports reporter = (ExtentReports) iSuite.getAttribute("reporter");
         ExtentTest testContext = (ExtentTest) iTestContext.getAttribute("testContext");
 
         if (iTestContext.getFailedTests().size() > 0) {
@@ -87,8 +90,6 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         if (iInvokedMethod.isTestMethod()) {
             ITestContext iTestContext = iTestResult.getTestContext();
-            ISuite iSuite = iTestContext.getSuite();
-            ExtentReports reporter = (ExtentReports) iSuite.getAttribute("reporter");
             ExtentTest testContext = (ExtentTest) iTestContext.getAttribute("testContext");
             ExtentTest test = reporter.startTest(iTestResult.getName());
             testContext.appendChild(test);
@@ -98,9 +99,6 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
 
     public void afterInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         if (iInvokedMethod.isTestMethod()) {
-            ITestContext iTestContext = iTestResult.getTestContext();
-            ISuite iSuite = iTestContext.getSuite();
-            ExtentReports reporter = (ExtentReports) iSuite.getAttribute("reporter");
             ExtentTest test = (ExtentTest) iTestResult.getAttribute("test");
             List<String> logs = Reporter.getOutput(iTestResult);
             for (String log : logs) {
@@ -127,5 +125,11 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
 
     public static void addSystemInfo(String param, String value) {
         systemInfo.put(param, value);
+    }
+
+    public void generateReport(List<XmlSuite> list, List<ISuite> list1, String s) {
+        reporter.addSystemInfo(systemInfo);
+        reporter.flush();
+        reporter.close();
     }
 }

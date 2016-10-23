@@ -4,7 +4,7 @@ import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 /**
- * Created by vimalrajselvam on 10/10/16.
+ * This is another test class
  */
 public class AnotherTestNgTest {
     @Test(dependsOnMethods = {"newTest"})

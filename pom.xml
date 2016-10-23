@@ -6,7 +6,7 @@
 
     <groupId>com.vimalselvam</groupId>
     <artifactId>testng-extentsreport</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>TestNG Extents Report</name>
@@ -35,7 +35,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <testng.version>6.9.13.6</testng.version>
-        <extentreports.version>2.41.0</extentreports.version>
+        <extentreports.version>3.0.0</extentreports.version>
     </properties>
 
     <dependencies>
@@ -46,7 +46,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.relevantcodes</groupId>
+            <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
             <version>${extentreports.version}</version>
         </dependency>

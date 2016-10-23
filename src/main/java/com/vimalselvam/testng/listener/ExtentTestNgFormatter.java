@@ -1,8 +1,8 @@
 package com.vimalselvam.testng.listener;
 
-import com.relevantcodes.extentreports.ExtentReports;
-import com.relevantcodes.extentreports.ExtentTest;
-import com.relevantcodes.extentreports.LogStatus;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import org.testng.*;
 import org.testng.xml.XmlSuite;
 
@@ -31,18 +31,18 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
             }
             reportPath = file.getAbsolutePath() + File.separator + "report.html";
         }
-        reporter = new ExtentReports(reportPath);
+        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(reportPath);
+        reporter = new ExtentReports();
+        reporter.attachReporter(htmlReporter);
     }
 
     public void onStart(ISuite iSuite) {
-        ExtentTest suite = reporter.startTest(iSuite.getName());
+        ExtentTest suite = reporter.createTest(iSuite.getName());
         iSuite.setAttribute("reporter", reporter);
         iSuite.setAttribute("suite", suite);
     }
 
     public void onFinish(ISuite iSuite) {
-        ExtentTest suite = (ExtentTest) iSuite.getAttribute("suite");
-        reporter.endTest(suite);
     }
 
 
@@ -69,30 +69,26 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     public void onStart(ITestContext iTestContext) {
         ISuite iSuite = iTestContext.getSuite();
         ExtentTest suite = (ExtentTest) iSuite.getAttribute("suite");
-        ExtentTest testContext = reporter.startTest(iTestContext.getName());
-        suite.appendChild(testContext);
+        ExtentTest testContext = suite.createNode(iTestContext.getName());
         iTestContext.setAttribute("testContext", testContext);
     }
 
     public void onFinish(ITestContext iTestContext) {
         ExtentTest testContext = (ExtentTest) iTestContext.getAttribute("testContext");
-
         if (iTestContext.getFailedTests().size() > 0) {
-            testContext.log(LogStatus.FAIL, "Failed");
+            testContext.fail("Failed");
         } else if (iTestContext.getSkippedTests().size() > 0) {
-            testContext.log(LogStatus.SKIP, "Skipped");
+            testContext.skip("Skipped");
         } else {
-            testContext.log(LogStatus.PASS, "Passed");
+            testContext.pass("Passed");
         }
-        reporter.endTest(testContext);
     }
 
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         if (iInvokedMethod.isTestMethod()) {
             ITestContext iTestContext = iTestResult.getTestContext();
             ExtentTest testContext = (ExtentTest) iTestContext.getAttribute("testContext");
-            ExtentTest test = reporter.startTest(iTestResult.getName());
-            testContext.appendChild(test);
+            ExtentTest test = testContext.createNode(iTestResult.getName());
             iTestResult.setAttribute("test", test);
         }
     }
@@ -102,33 +98,37 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
             ExtentTest test = (ExtentTest) iTestResult.getAttribute("test");
             List<String> logs = Reporter.getOutput(iTestResult);
             for (String log : logs) {
-                test.log(LogStatus.INFO, log);
+                test.info(log);
             }
 
             int status = iTestResult.getStatus();
             if (ITestResult.SUCCESS == status) {
-                test.log(LogStatus.PASS, "Passed");
+                test.pass("Passed");
             } else if (ITestResult.FAILURE == status) {
-                test.log(LogStatus.FAIL, "Failed", iTestResult.getThrowable());
+                test.fail(iTestResult.getThrowable());
             } else {
-                test.log(LogStatus.SKIP, "Skipped");
+                test.skip("Skipped");
             }
 
-            reporter.endTest(test);
+            for (String group : iInvokedMethod.getTestMethod().getGroups()) {
+                test.assignCategory(group);
+            }
         }
     }
 
-    public static void attachScreenshot(ITestResult iTestResult, String filePath) {
+    public static void addScreenCaptureFromPath(ITestResult iTestResult, String filePath) throws IOException {
         ExtentTest test = (ExtentTest) iTestResult.getAttribute("test");
-        test.log(LogStatus.INFO, test.addScreenCapture(filePath));
+        test.addScreenCaptureFromPath(filePath);
     }
 
-    public static void addSystemInfo(String param, String value) {
+    public static void setSystemInfo(String param, String value) {
         systemInfo.put(param, value);
     }
 
     public void generateReport(List<XmlSuite> list, List<ISuite> list1, String s) {
-        reporter.addSystemInfo(systemInfo);
+        for (Map.Entry<String, String> entry : systemInfo.entrySet()) {
+            reporter.setSystemInfo(entry.getKey(), entry.getValue());
+        }
         reporter.flush();
         reporter.close();
     }

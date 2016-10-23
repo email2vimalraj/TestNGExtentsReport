@@ -4,34 +4,27 @@ import com.vimalselvam.testng.listener.ExtentTestNgFormatter;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+
 /**
- * Created by vimalrajselvam on 10/10/16.
+ * This is a sample testng test.
  */
 public class TestNgTest {
 
     @BeforeSuite
     public void beforeSuite() {
-        ExtentTestNgFormatter.addSystemInfo("Environment", "Sandbox");
-        ExtentTestNgFormatter.addSystemInfo("Selenium Version", "2.53.1");
-    }
-
-    @BeforeMethod
-    public void beforeMethod(ITestResult iTestResult) {
-//        this.iTestResult = iTestResult;
+        ExtentTestNgFormatter.setSystemInfo("Environment", "Sandbox");
+        ExtentTestNgFormatter.setSystemInfo("Selenium Version", "2.53.1");
     }
 
     @AfterMethod
-    public void afterMethod(ITestResult iTestResult) {
-        ExtentTestNgFormatter.attachScreenshot(iTestResult,
+    public void afterMethod(ITestResult iTestResult) throws IOException {
+        ExtentTestNgFormatter.addScreenCaptureFromPath(iTestResult,
                 "/Users/vimalrajselvam/development/extentreports/target/test-classes/1.png");
         Reporter.log("After Method: " + iTestResult.getMethod().getMethodName());
-//        ExtentTest test = (ExtentTest) iTestResult.getAttribute("test");
-//
-//        test.addScreenCapture("/Users/vselvam/development/extentreports/target/test-classes/1.png");
     }
 
     @Test(groups = {"group1"})
@@ -41,7 +34,7 @@ public class TestNgTest {
         Reporter.log("Another log");
     }
 
-    @Test(enabled = true)
+    @Test(groups = {"group2"})
     public void anotherSimpleTest() {
         System.err.println("This is another simple test - Thread: " + Thread.currentThread().getId());
         Reporter.log("Another Simple test");

@@ -8,6 +8,7 @@ import org.testng.xml.XmlSuite;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,11 @@ import java.util.Map;
 public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IInvokedMethodListener, IReporter {
     private ExtentReports reporter;
     private static Map<String, String> systemInfo;
+    private static List<String> testRunnerOutput;
 
     public ExtentTestNgFormatter() throws IOException {
         systemInfo = new HashMap<String, String>();
+        testRunnerOutput = new ArrayList<String>();
         String reportPath = System.getProperty("reportPath");
         if (reportPath == null) {
             File file = new File("output" + File.separator + "Run_" + System.currentTimeMillis());
@@ -121,6 +124,10 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
         test.addScreenCaptureFromPath(filePath);
     }
 
+    public static void setTestRunnerOutput(String message) {
+        testRunnerOutput.add(message);
+    }
+
     public static void setSystemInfo(String param, String value) {
         systemInfo.put(param, value);
     }
@@ -129,6 +136,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
         for (Map.Entry<String, String> entry : systemInfo.entrySet()) {
             reporter.setSystemInfo(entry.getKey(), entry.getValue());
         }
+        reporter.setTestRunnerOutput(testRunnerOutput);
         reporter.flush();
         reporter.close();
     }

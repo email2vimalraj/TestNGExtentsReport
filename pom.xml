@@ -21,6 +21,17 @@
         </license>
     </licenses>
 
+    <issueManagement>
+        <url>https://github.com/email2vimalraj/TestNGExtentsReport/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/email2vimalraj/TestNGExtentsReport</url>
+        <connection>scm:git:git://github.com/email2vimalraj/TestNGExtentsReport.git</connection>
+        <developerConnection>scm:git:git@github.com/email2vimalraj/TestNGExtentsReport.git</developerConnection>
+    </scm>
+
     <developers>
         <developer>
             <name>Vimalraj Selvam</name>

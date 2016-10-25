@@ -29,14 +29,12 @@ public class TestNgTest {
 
     @Test(groups = {"group1"})
     public void simpleTest() {
-        System.err.println("This is simple test - Thread: " + Thread.currentThread().getId());
         Reporter.log("Simple test");
         Reporter.log("Another log");
     }
 
     @Test(groups = {"group2"})
     public void anotherSimpleTest() {
-        System.err.println("This is another simple test - Thread: " + Thread.currentThread().getId());
         Reporter.log("Another Simple test");
     }
 }

@@ -24,9 +24,9 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     public ExtentTestNgFormatter() throws IOException {
         systemInfo = new HashMap<String, String>();
         testRunnerOutput = new ArrayList<String>();
-        String reportPath = System.getProperty("reportPath");
+        String reportPath = System.getProperty("extentReportPath");
         if (reportPath == null) {
-            File file = new File("output" + File.separator + "Run_" + System.currentTimeMillis());
+            File file = new File(TestNG.DEFAULT_OUTPUTDIR);
             if (!file.exists()) {
                 if (!file.mkdirs()) {
                     throw new IOException("Failed to create output run directory");

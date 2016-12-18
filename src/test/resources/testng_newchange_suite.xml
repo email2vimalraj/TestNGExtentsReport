@@ -1,20 +1,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite" verbose="1" parallel="tests">
+<suite name="Suite" verbose="2">
     <listeners>
         <listener class-name="com.vimalselvam.testng.listener.ExtentTestNgFormatter" />
     </listeners>
 
     <parameter name="system.info" value="test.MySystemInfo" />
-    <parameter name="report.config" value="src/test/resources/extent-config.xml" />
 
     <test name="Test">
         <classes>
-            <class name="test.TestNgTest" />
-        </classes>
-    </test>
-    <test name="Test 2">
-        <classes>
-            <class name="test.AnotherTestNgTest" />
+            <class name="test.DemoTestClass" />
         </classes>
     </test>
 </suite>

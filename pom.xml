@@ -6,7 +6,7 @@
 
     <groupId>com.vimalselvam</groupId>
     <artifactId>testng-extentsreport</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>TestNG Extents Report</name>
@@ -45,8 +45,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <testng.version>6.9.13.6</testng.version>
-        <extentreports.version>3.0.0</extentreports.version>
+        <testng.version>6.10</testng.version>
+        <extentreports.version>3.0.1</extentreports.version>
     </properties>
 
     <dependencies>
@@ -60,6 +60,12 @@
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
             <version>${extentreports.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
         </dependency>
     </dependencies>
 
@@ -82,8 +88,16 @@
                 <version>2.19.1</version>
                 <configuration>
                     <suiteXmlFiles>
-                        <suiteXmlFile>src/test/resources/testng_new_suite.xml</suiteXmlFile>
+                        <suiteXmlFile>src/test/resources/testng_suite.xml</suiteXmlFile>
                     </suiteXmlFiles>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
         </plugins>

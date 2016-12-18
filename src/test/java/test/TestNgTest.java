@@ -10,20 +10,15 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 
 /**
- * This is a sample testng test.
+ * This is a sample TestNG test.
  */
 public class TestNgTest {
 
-    @BeforeSuite
-    public void beforeSuite() {
-        ExtentTestNgFormatter.setSystemInfo("Environment", "Sandbox");
-        ExtentTestNgFormatter.setSystemInfo("Selenium Version", "2.53.1");
-    }
+    // The instance of the ExtentTestNgFormatter can be obtained as follows
+    private ExtentTestNgFormatter formatter = ExtentTestNgFormatter.getInstance();
 
     @AfterMethod
     public void afterMethod(ITestResult iTestResult) throws IOException {
-        ExtentTestNgFormatter.addScreenCaptureFromPath(iTestResult,
-                "/Users/vimalrajselvam/development/extentreports/target/test-classes/1.png");
         Reporter.log("After Method: " + iTestResult.getMethod().getMethodName());
     }
 

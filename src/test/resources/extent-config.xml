@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extentreports>
+    <configuration>
+        <encoding>UTF-8</encoding>
+        <documentTitle>TestNG Extent Report</documentTitle>
+        <reportName>TestNG Extent Report</reportName>
+
+        <!-- custom javascript -->
+        <!--<scripts>-->
+            <!--<![CDATA[-->
+                <!--$(document).ready(function() {-->
+                    <!--$('#childNodes').prop("checked", true);-->
+                <!--});-->
+            <!--]]>-->
+        <!--</scripts>-->
+
+    </configuration>
+</extentreports>

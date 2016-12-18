@@ -182,7 +182,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
      *
      * @param iTestResult The {@link ITestResult} object
      * @param filePath The image file path
-     * @throws IOException
+     * @throws IOException {@link IOException}
      */
     public void addScreenCaptureFromPath(ITestResult iTestResult, String filePath) throws IOException {
         ExtentTest test = (ExtentTest) iTestResult.getAttribute("test");
@@ -194,7 +194,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
      * {@link org.testng.annotations.Test} annotated method
      *
      * @param filePath The image file path
-     * @throws IOException
+     * @throws IOException {@link IOException}
      */
     public void addScreenCaptureFromPath(String filePath) throws IOException {
         ITestResult iTestResult = Reporter.getCurrentTestResult();
@@ -295,6 +295,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     /**
      * Marks the given node as failed
      *
+     * @param nodeName The name of the node
      * @param t The {@link Throwable} object
      */
     public void failTheNode(String nodeName, Throwable t) {
@@ -316,6 +317,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     /**
      * Marks the given node as failed
      *
+     * @param nodeName The name of the node
      * @param logMessage The message to be logged
      */
     public void failTheNode(String nodeName, String logMessage) {

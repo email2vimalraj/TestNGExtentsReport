@@ -5,6 +5,7 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.vimalselvam.testng.EmailReporter;
 import com.vimalselvam.testng.NodeName;
 import com.vimalselvam.testng.SystemInfo;
 import org.testng.IInvokedMethod;
@@ -41,19 +42,28 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     public ExtentTestNgFormatter() {
         setInstance(this);
         testRunnerOutput = new ArrayList<>();
-        String reportPath = System.getProperty("extentReportPath");
-        if (reportPath == null) {
-            File file = new File(TestNG.DEFAULT_OUTPUTDIR);
-            if (!file.exists()) {
-                if (!file.mkdirs()) {
-                    throw new RuntimeException("Failed to create output run directory");
-                }
-            }
-            reportPath = file.getAbsolutePath() + File.separator + "report.html";
+        String reportPathStr = System.getProperty("reportPath");
+        File reportPath;
+
+        try {
+            reportPath = new File(reportPathStr);
+        } catch (NullPointerException e) {
+            reportPath = new File(TestNG.DEFAULT_OUTPUTDIR);
         }
-        htmlReporter = new ExtentHtmlReporter(reportPath);
+
+        if (!reportPath.exists()) {
+            if (!reportPath.mkdirs()) {
+                throw new RuntimeException("Failed to create output run directory");
+            }
+        }
+
+        File reportFile = new File(reportPath, "report.html");
+        File emailReportFile = new File(reportPath, "emailable-report.html");
+
+        htmlReporter = new ExtentHtmlReporter(reportFile);
+        EmailReporter emailReporter = new EmailReporter(emailReportFile);
         reporter = new ExtentReports();
-        reporter.attachReporter(htmlReporter);
+        reporter.attachReporter(htmlReporter, emailReporter);
     }
 
     /**

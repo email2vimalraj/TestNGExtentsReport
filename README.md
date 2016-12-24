@@ -9,6 +9,8 @@ This listener uses the [ExtentReports v3.0.0](http://extentreports.relevantcodes
 ## Why another library?
 You don't have to spend time in re-inventing on how to define what. Just add this as a listener or [service loader](http://testng.org/doc/documentation-main.html#listeners-service-loader). You will get the nice looking report generated at the end of your test execution.
 
+Also, you will get the **emailable report** out-of-the box.
+
 ## Usage
 For maven, add the following as dependency:
 
@@ -16,7 +18,7 @@ For maven, add the following as dependency:
 <dependency>
     <groupId>com.vimalselvam</groupId>
     <artifactId>testng-extentsreport</artifactId>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -30,11 +32,11 @@ Either in your **testng.xml**, add the listener:
 
 or add as a [service loader](http://testng.org/doc/documentation-main.html#listeners-service-loader) (recommended).
 
-By default, the report will be generated at TestNG's output directory. i.e., `test-output/report.html`.
+By default, the report will be generated at TestNG's output directory. i.e., `test-output/report.html` and the emailable report at `test-output/emailable-report.html`.
 
-In case you want to generate the report in a different location, make sure you pass the JVM argument called `extentReportPath` with the absolute file path.
+In case you want to generate the report in a different location, make sure you pass the JVM argument called `reportPath` with the absolute directory path.
 
-*For example*: I run my maven test as: `mvn clean test -DreportPath=/Users/vselvam/myproject/output/report.html`
+*For example*: I run my maven test as: `mvn clean test -DreportPath=output`. This will generate both the reports in my `${project directory}/output`.
 
 ### Adding custom reporter config
 You can customize the report using a XML file. The XML file should follow as given here: [ExtentReports Configuration](http://extentreports.relevantcodes.com/java/#configuration).

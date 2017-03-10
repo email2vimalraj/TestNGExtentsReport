@@ -11,6 +11,10 @@ You don't have to spend time in re-inventing on how to define what. Just add thi
 
 Also, you will get the **emailable report** out-of-the box.
 
+## Pre-requisite
+- JDK 8+
+- Extent Report v3.0.2+
+
 ## Usage
 For maven, add the following as dependency:
 
@@ -18,7 +22,7 @@ For maven, add the following as dependency:
 <dependency>
     <groupId>com.vimalselvam</groupId>
     <artifactId>testng-extentsreport</artifactId>
-    <version>1.3.0</version>
+    <version>1.3.1</version>
 </dependency>
 ```
 
@@ -36,7 +40,7 @@ By default, the report will be generated at TestNG's output directory. i.e., `te
 
 In case you want to generate the report in a different location, make sure you pass the JVM argument called `reportPath` with the absolute directory path.
 
-*For example*: I run my maven test as: `mvn clean test -DreportPath=output`. This will generate both the reports in my `${project directory}/output`.
+*For example*: I run my maven test as: `mvn clean test -DreportPath=output`. This will generate both the reports in the `${project directory}/output`.
 
 ### Adding custom reporter config
 You can customize the report using a XML file. The XML file should follow as given here: [ExtentReports Configuration](http://extentreports.relevantcodes.com/java/#configuration).

@@ -8,16 +8,7 @@ import com.google.common.base.Strings;
 import com.vimalselvam.testng.EmailReporter;
 import com.vimalselvam.testng.NodeName;
 import com.vimalselvam.testng.SystemInfo;
-import org.testng.IInvokedMethod;
-import org.testng.IInvokedMethodListener;
-import org.testng.IReporter;
-import org.testng.ISuite;
-import org.testng.ISuiteListener;
-import org.testng.ITestContext;
-import org.testng.ITestListener;
-import org.testng.ITestResult;
-import org.testng.Reporter;
-import org.testng.TestNG;
+import org.testng.*;
 import org.testng.xml.XmlSuite;
 
 import java.io.File;
@@ -79,6 +70,24 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
         instance = formatter;
     }
 
+    /**
+     * Gets the system information map
+     *
+     * @return The system information map
+     */
+    public Map<String, String> getSystemInfo() {
+        return systemInfo;
+    }
+
+    /**
+     * Sets the system information
+     *
+     * @param systemInfo The system information map
+     */
+    public void setSystemInfo(Map<String, String> systemInfo) {
+        this.systemInfo = systemInfo;
+    }
+
     public void onStart(ISuite iSuite) {
         ExtentTest suite = reporter.createTest(iSuite.getName());
 
@@ -106,7 +115,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
             }
 
             SystemInfo t = (SystemInfo) systemInfoCustomImplClazz.newInstance();
-            this.systemInfo = t.getSystemInfo();
+            setSystemInfo(t.getSystemInfo());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             throw new IllegalStateException(e);
         }
@@ -191,7 +200,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
      * and the {@link ITestResult} is the mandatory parameter
      *
      * @param iTestResult The {@link ITestResult} object
-     * @param filePath The image file path
+     * @param filePath    The image file path
      * @throws IOException {@link IOException}
      */
     public void addScreenCaptureFromPath(ITestResult iTestResult, String filePath) throws IOException {
@@ -223,8 +232,8 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     }
 
     public void generateReport(List<XmlSuite> list, List<ISuite> list1, String s) {
-        if (systemInfo != null) {
-            for (Map.Entry<String, String> entry : systemInfo.entrySet()) {
+        if (getSystemInfo() != null) {
+            for (Map.Entry<String, String> entry : getSystemInfo().entrySet()) {
                 reporter.setSystemInfo(entry.getKey(), entry.getValue());
             }
         }
@@ -283,8 +292,9 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
 
     /**
      * Adds a info log message to the node
+     *
      * @param logMessage The log message string
-     * @param nodeName The name of the node
+     * @param nodeName   The name of the node
      */
     public void addInfoLogToNode(String logMessage, String nodeName) {
         ITestResult result = Reporter.getCurrentTestResult();
@@ -306,7 +316,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
      * Marks the given node as failed
      *
      * @param nodeName The name of the node
-     * @param t The {@link Throwable} object
+     * @param t        The {@link Throwable} object
      */
     public void failTheNode(String nodeName, Throwable t) {
         ITestResult result = Reporter.getCurrentTestResult();
@@ -327,7 +337,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
     /**
      * Marks the given node as failed
      *
-     * @param nodeName The name of the node
+     * @param nodeName   The name of the node
      * @param logMessage The message to be logged
      */
     public void failTheNode(String nodeName, String logMessage) {

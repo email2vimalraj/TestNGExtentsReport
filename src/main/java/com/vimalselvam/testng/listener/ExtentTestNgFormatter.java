@@ -32,7 +32,7 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
 
     public ExtentTestNgFormatter() {
         setInstance(this);
-        testRunnerOutput = new ArrayList<>();
+        testRunnerOutput = new ArrayList<String>();
         String reportPathStr = System.getProperty("reportPath");
         File reportPath;
 
@@ -116,7 +116,11 @@ public class ExtentTestNgFormatter implements ISuiteListener, ITestListener, IIn
 
             SystemInfo t = (SystemInfo) systemInfoCustomImplClazz.newInstance();
             setSystemInfo(t.getSystemInfo());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        } catch (ClassNotFoundException e){
+            throw new IllegalStateException(e);
+        }catch (InstantiationException e){
+            throw new IllegalStateException(e);
+        }catch (IllegalAccessException e) {
             throw new IllegalStateException(e);
         }
     }
